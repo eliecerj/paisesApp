@@ -18,4 +18,14 @@ export class CountryService {
     return this.http.get<Country[]>(url);
 
   }
+
+  searchCapital (name: string): Observable<Country[]> {
+    const url = `${this.apiUrl}/capital/${name}`;
+    return this.http.get<Country[]>(url);
+  }
+
+  searchByCountryCode (id: string): Observable<Country> {
+    const url = `${this.apiUrl}/alpha/${id}`;
+    return this.http.get<Country>(url);
+  }
 }
