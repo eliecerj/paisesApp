@@ -8,10 +8,26 @@
             (onDebounce)="suggestion($event)"
             placeholder="Buscar pais..."
             >
-            
-        </app-country-input>
+            </app-country-input>
         </div>
     </div>
+
+    <ul *ngIf="showSuggestion"
+        class="list-group">
+        <li *ngFor="let country of suggestedCountries" 
+            class="list-group-item list-group-item-action">
+            <a class="nav-link"
+                [routerLink]="['/viewCountry', country.cca2]">
+                {{ country.name.common }}
+            </a> 
+        </li>
+        <li class="list-group-item list-group-item-action"
+            (click)="searchSuggested(termino)">
+            <a class="nav-link">
+                Buscar "{{ termino }}""
+            </a> 
+        </li>
+    </ul>
     
     <hr>
     <div *ngIf='isError' class="alert alert-danger">

@@ -12,11 +12,14 @@ export class ByCountryComponent  {
   termino: string = '';
   isError: boolean = false;
   countries: Country[] = [];
+  suggestedCountries: Country[] = [];
+  showSuggestion: boolean = false;
 
   constructor( private countryService: CountryService) { }
 
   buscar(termino: string) {
-    this.isError = false;
+  this.showSuggestion = false;
+  this.isError = false;
     this.termino = termino;
     this.countryService.searchCountry(this.termino)
       .subscribe( (countries) => {
@@ -31,10 +34,18 @@ export class ByCountryComponent  {
   }
 
   suggestion(term: string) {
+    this.showSuggestion = true;
     this.isError = false;
-    // sugerencias
+    this.termino = term;
 
+    this.countryService.searchCountry(term)
+      .subscribe( 
+        countries => this.suggestedCountries = countries.splice(0,5),
+        (err) => this.suggestedCountries = []
+        );
   }
 
-
+  searchSuggested(term: string) {
+    this.buscar(term);
+  }
 }
