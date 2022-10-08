@@ -1,7 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
-import { switchMap } from 'rxjs';
+import { switchMap, tap } from 'rxjs';
 import { CountryService } from '../../services/country.service';
+import { Country } from '../../interfaces/country.interface';
 
 @Component({
   selector: 'app-view-country',
@@ -9,6 +10,8 @@ import { CountryService } from '../../services/country.service';
   styleUrls: ['./view-country.component.css']
 })
 export class ViewCountryComponent implements OnInit {
+
+  country!: Country;
 
   constructor( 
     private activatedRoute: ActivatedRoute,
@@ -19,17 +22,17 @@ export class ViewCountryComponent implements OnInit {
 
     this.activatedRoute.params
       .pipe(
-        switchMap(({id}) => this.countryService.searchByCountryCode(id))
+        switchMap(({id}) => this.countryService.searchByCountryCode(id)),
+        tap(console.log)
       )
-      .subscribe(res => {
-        console.log(res);
-      });
+      .subscribe(country => this.country = country[0]);
+
+    }
 
 
     // this.activatedRoute.params
     //   .subscribe( ({id}) => {
     //     console.log(id);
-
     //     this.countryService.searchByCountryCode(id)
     //       .subscribe(country => {
     //         console.log('countryyy', country);
@@ -37,5 +40,3 @@ export class ViewCountryComponent implements OnInit {
         
     //   })
   }
-
-}
